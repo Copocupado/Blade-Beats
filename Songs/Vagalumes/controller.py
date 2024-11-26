@@ -14,7 +14,6 @@ quarter_beat = round(half_beat / 2)
 eight_beat = round(quarter_beat / 2)
 
 
-
 def get_last_timestamp(dict):
     if dict:
         return max(dict.keys())
@@ -206,7 +205,7 @@ def song():
 
     dict.update(vou_cacar_refrao(get_last_timestamp(dict) + one_beat * 4 + half_beat + quarter_beat))
 
-    #Faco do teus bracos
+    # Faco do teus bracos
     dict[get_last_timestamp(dict) + half_beat] = {
         'is_long': False,
         'health': 1,
@@ -445,7 +444,7 @@ def vou_cacar_refrao(timestamp, variation=1):
         'health': (one_beat + half_beat) / 1000,
         'double': False,
         'side_to_spawn': Fruit.sides_to_spawn[randint(0, 1)]
-    } # AIIIIII
+    }  # AIIIIII
 
     dict[get_last_timestamp(dict) + one_beat * 2 + half_beat] = {
         'is_long': False,
@@ -544,7 +543,7 @@ def vou_cacar_refrao(timestamp, variation=1):
         'side_to_spawn': Fruit.sides_to_spawn[randint(0, 1)]
     }
 
-    #EEUUUUU
+    # EEUUUUU
     dict[get_last_timestamp(dict) + half_beat] = {
         'is_long': True,
         'health': one_beat / 1000,
@@ -677,11 +676,6 @@ def vou_cacar_refrao(timestamp, variation=1):
         'double': False,
         'side_to_spawn': Fruit.sides_to_spawn[randint(0, 1)]
     }
-
-
-
-
-
 
     return dict
 

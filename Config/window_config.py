@@ -5,7 +5,7 @@ WIDTH = 1280
 HEIGHT = 720
 FONT = 'Config/PixelatedFont.ttf'
 
-FPS = 120
+FPS = 60
 
 CLOCK = pygame.time.Clock()
 
