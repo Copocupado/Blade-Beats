@@ -544,8 +544,8 @@ class Scoreboard:
         pygame.time.set_timer(self.event_trigger2, self.timer_for_final_score + self.time_needed - 1100, loops=1)
 
         GeneralSFX.stop_current()
-        GeneralSFX.play_song(self.game.song.song_name, start=self.game.controller.chorus_timestamp() - (
-                (self.timer_for_final_score + self.time_needed) / 1000))
+        GeneralSFX.play_song(self.game.song.song_name, start=self.game.controller.chorus_timestamp() -
+                                                             ((self.timer_for_final_score + self.time_needed) / 1000))
 
     def run(self):
         while True:

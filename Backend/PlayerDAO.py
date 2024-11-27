@@ -1,6 +1,8 @@
+import logging
 import sqlite3
 from typing import Optional, Tuple
 
+logging.basicConfig(filename='login_app.log', level=logging.ERROR)
 
 class PlayerDAO:
     def __init__(self, db_file: str = "game.db"):
@@ -19,6 +21,7 @@ class PlayerDAO:
                 ''')
                 conn.commit()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao conectar ao banco de dados: {e}")
             raise ValueError(e)
 
     def create_player(self, nickname: str) -> Optional[int]:
@@ -29,8 +32,10 @@ class PlayerDAO:
                 conn.commit()
                 return cursor.lastrowid
         except sqlite3.IntegrityError:
+            logging.error(f"Jogador com o nickname {nickname} já existe")
             raise ValueError(f"Jogador com o nickname {nickname} já existe")
         except sqlite3.Error as e:
+            logging.error(f"Erro ao criar jogador: {e}")
             raise ValueError(f"Erro ao criar jogador: {e}")
 
     def get_player_by_id(self, player_id: int) -> Optional[Tuple[int, str]]:
@@ -41,6 +46,7 @@ class PlayerDAO:
                 result = cursor.fetchone()
                 return result if result else None
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter jogador: {e}")
             raise ValueError(f"Erro ao obter jogador: {e}")
 
     def get_player_by_nickname(self, nickname: str) -> Optional[Tuple[int, str]]:
@@ -51,6 +57,7 @@ class PlayerDAO:
                 result = cursor.fetchone()
                 return result if result else None
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter jogador: {e}")
             raise ValueError(f"Erro ao obter jogador: {e}")
 
     def update_player(self, player_id: int, new_nickname: str) -> bool:
@@ -62,8 +69,10 @@ class PlayerDAO:
                 conn.commit()
                 return cursor.rowcount > 0
         except sqlite3.IntegrityError:
+            logging.error(f"Jogador com o nickname {new_nickname} já existe")
             raise ValueError(f"Jogador com o nickname {new_nickname} já existe")
         except sqlite3.Error as e:
+            logging.error(f"Erro ao atualizar jogador: {e}")
             raise ValueError(f"Erro ao atualizar jogador: {e}")
 
     def delete_player(self, player_id: int) -> bool:
@@ -74,6 +83,7 @@ class PlayerDAO:
                 conn.commit()
                 return cursor.rowcount > 0
         except sqlite3.Error as e:
+            logging.error(f"Erro ao excluir jogador: {e}")
             raise ValueError(f"Erro ao excluir jogador: {e}")
 
     def get_all_players(self) -> list[Tuple[int, str]]:
@@ -83,4 +93,5 @@ class PlayerDAO:
                 cursor.execute('SELECT id, nickname FROM players')
                 return cursor.fetchall()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter todos os jogadores: {e}")
             raise ValueError(f"Erro ao obter todos os jogadores: {e}")

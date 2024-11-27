@@ -1,6 +1,8 @@
+import logging
 import sqlite3
 from typing import Tuple
 
+logging.basicConfig(filename='login_app.log', level=logging.ERROR)
 
 class RankingsDAO:
     def __init__(self, db_file: str = "game.db"):
@@ -23,6 +25,7 @@ class RankingsDAO:
                 ''')
                 conn.commit()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao conectar ao banco de dados: {e}")
             raise ValueError(e)
 
     def add_ranking(self, nome_musica: str, id_jogador: int, pontuacao: int) -> None:
@@ -35,6 +38,7 @@ class RankingsDAO:
                 ''', (nome_musica, id_jogador, pontuacao))
                 conn.commit()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao adicionar ranking: {e}")
             raise ValueError(f"Erro ao adicionar ranking: {e}")
 
     def get_rankings_by_music(self, nome_musica: str) -> list[Tuple[str, str, int]]:
@@ -50,6 +54,7 @@ class RankingsDAO:
                 ''', (nome_musica,))
                 return cursor.fetchall()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter ranking: {e}")
             raise ValueError(f"Erro ao obter ranking: {e}")
 
     def get_ranking_by_music(self, nome_musica: str, id_jogador: int) -> Tuple[str, str, int]:
@@ -66,6 +71,7 @@ class RankingsDAO:
                 ''', (nome_musica, id_jogador))
                 return cursor.fetchone()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter ranking: {e}")
             raise ValueError(f"Erro ao obter ranking: {e}")
 
     def get_player_rankings(self, id_jogador: int) -> list[Tuple[str, str, int]]:
@@ -81,6 +87,7 @@ class RankingsDAO:
                 ''', (id_jogador,))
                 return cursor.fetchall()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter rankings do jogador: {e}")
             raise ValueError(f"Erro ao obter rankings do jogador: {e}")
 
     def get_all_rankings(self) -> list[Tuple[str, str, int]]:
@@ -95,6 +102,7 @@ class RankingsDAO:
                 ''')
                 return cursor.fetchall()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter todos os rankings: {e}")
             raise ValueError(f"Erro ao obter todos os rankings: {e}")
 
     def delete_ranking(self, nome_musica: str, id_jogador: int) -> bool:
@@ -108,6 +116,7 @@ class RankingsDAO:
                 conn.commit()
                 return cursor.rowcount > 0
         except sqlite3.Error as e:
+            logging.error(f"Erro ao excluir ranking: {e}")
             raise ValueError(f"Erro ao excluir ranking: {e}")
 
     def get_top_rankings_by_music(self, nome_musica: str, limit: int = 10) -> list[Tuple[str, str, int]]:
@@ -124,4 +133,5 @@ class RankingsDAO:
                 ''', (nome_musica, limit))
                 return cursor.fetchall()
         except sqlite3.Error as e:
+            logging.error(f"Erro ao obter top rankings: {e}")
             raise ValueError(f"Erro ao obter top rankings: {e}")
