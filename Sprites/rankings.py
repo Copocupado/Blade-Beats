@@ -32,17 +32,16 @@ class Rankings(pygame.sprite.Sprite):
 
         self.slam_time = self.downscale_time + 10
 
-        # New pulse animation variables
         self.pulse_timer = 0
-        self.pulse_speed = 0.1  # Base speed of the pulse
-        self.base_pulse_intensity = 0.02  # Base intensity of the pulse
+        self.pulse_speed = 0.1
+        self.base_pulse_intensity = 0.02
         self.pulse_scale = 1.0
 
     def update(self, *args, **kwargs):
         if self.play_intro:
             self.animate_intro()
         else:
-            self.animate_pulse()  # Apply pulse animation when not in intro
+            self.animate_pulse()
 
         if self.score == 0 and self.conditionally_show:
             self.image = pygame.Surface((0, 0), pygame.SRCALPHA)
@@ -101,7 +100,7 @@ class Rankings(pygame.sprite.Sprite):
             self.rect.x += offset_x
             self.rect.y += offset_y
         else:
-            self.play_intro = False  # End intro animation
+            self.play_intro = False
 
         self.intro_index += 1
 
@@ -109,21 +108,17 @@ class Rankings(pygame.sprite.Sprite):
         if not self.original_image or self.play_intro:
             return
 
-        # Increase pulse intensity based on current_index
         intensity_multiplier = 1 + (self.current_index or 0) * 1
         pulse_intensity = self.base_pulse_intensity * intensity_multiplier
 
-        # Calculate pulse scale using sine wave
         self.pulse_timer += self.pulse_speed
         self.pulse_scale = 1 + pulse_intensity * math.sin(self.pulse_timer)
 
-        # Apply pulse scale to image
         scaled_width = int(self.original_width * self.pulse_scale)
         scaled_height = int(self.original_height * self.pulse_scale)
 
         self.image = pygame.transform.scale(self.original_image, (scaled_width, scaled_height))
 
-        # Maintain position relative to top right corner
         self.rect = self.image.get_rect(topright=self.pos)
 
     def setup_animation_intro(self):

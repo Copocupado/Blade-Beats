@@ -51,10 +51,10 @@ class Main:
         self.last_frame = None
         self.frame_counter = 0
 
-        self.rankings_dao = RankingsDAO()  # Add this
+        self.rankings_dao = RankingsDAO()
         self.rankings_title = Text(
             msg="Rankings:",
-            position=(WIDTH - 50 - int(WIDTH * 0.3), 300),  # Position below video
+            position=(WIDTH - 50 - int(WIDTH * 0.3), 300),
             color=WHITE,
             font_size=30,
             centered=False
@@ -139,14 +139,11 @@ class Main:
         self.frame_counter += 1.0
 
     def update_rankings_display(self, song_name):
-        # Get top 5 rankings
         top_rankings = self.rankings_dao.get_top_rankings_by_music(song_name, 5)
 
-        # Clear previous rankings texts
         self.rankings_texts.clear()
 
-        # Create text objects for top 5
-        start_y = 340  # Starting Y position for rankings
+        start_y = 340
         for i, (_, nickname, score) in enumerate(top_rankings, 1):
             ranking_text = Text(
                 msg=f"{i}. {nickname} - {round(score)}",
@@ -157,14 +154,13 @@ class Main:
             )
             self.rankings_texts.append(ranking_text)
 
-        # Find player's ranking if they exist
         if self.player:
             all_rankings = self.rankings_dao.get_rankings_by_music(song_name)
             player_rank = None
             player_score = None
 
             for i, (_, nickname, score) in enumerate(all_rankings, 1):
-                if nickname == self.player[1]:  # Assuming player[1] is the nickname
+                if nickname == self.player[1]:
                     player_rank = i
                     player_score = round(score)
                     break

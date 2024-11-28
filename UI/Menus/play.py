@@ -120,13 +120,10 @@ class BaseGame:
         return fruits
 
     def draw_background(self, display_static=False):
-        # Update the background frame if the counter reaches or exceeds the interval
         if self.background_frame_counter >= self.background_frame_interval:
 
-            # Adjust the counter by subtracting the interval
             self.background_frame_counter -= self.background_frame_interval
 
-            # Read and process the frame from the video
             ret, frame = self.background_video.read()
 
             if ret:
@@ -139,17 +136,13 @@ class BaseGame:
 
                 self.background_last_frame = frame_surface
             else:
-                # Reset video to loop from the beginning
                 self.background_video.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
-            # Draw the last frame on the camera surface
             self.camera.internal_surface.blit(self.background_last_frame, (0, 0))
 
-        # Only increment counter if display_static is False
         if not display_static:
             self.background_frame_counter += 1.0
         else:
-            # Reset video position if displaying a static background
             self.background_video.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     def go_back_to_main_menu(self):
@@ -272,16 +265,13 @@ class MainGame:
                     timestamp = self.spawn_fruits_event_triggers[event.type]
                     fruit_dict = self.song_dict[timestamp]
 
-                    # Determine spawn parameters
                     is_double = fruit_dict['double']
                     is_last_fruit = self.game.controller.last_timestamp() == timestamp
                     health = round(fruit_dict['health'] * current_fps) if fruit_dict['is_long'] == 1 else 1
 
-                    # Set slow motion activation if last fruit
                     if is_last_fruit:
                         self.slow_motion_activation_index = 2 if is_double else 1
 
-                    # Common spawn parameters
                     spawn_params = {
                         'current_level': self.current_song_level,
                         'asset_loader': self.game.asset_loader,
@@ -295,7 +285,6 @@ class MainGame:
                         'start_fps': current_fps
                     }
 
-                    # Spawn checkpoint or fruits based on type
                     if fruit_dict.get('checkpoint'):
                         sides = ['Left', 'Right'] if is_double else [fruit_dict['side_to_spawn']]
                         for side in sides:
@@ -324,7 +313,7 @@ class MainGame:
 
                 elif event.type in self.pulse_camera_event_triggers:
                     if not self.should_slow_down:
-                        first_zoom = 1 + (self.current_song_level / 100)
+                        first_zoom = 1 + (self.current_song_level / 50)
                         self.game.camera.setup_pulse(first_zoom, 10)
 
                 elif event.type == pygame.KEYDOWN:

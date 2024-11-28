@@ -21,7 +21,6 @@ class Player(pygame.sprite.Sprite):
         self.image = asset_loader.assets['player']['idle'][0]
         self.game_panel = game_panel
 
-        # Scale the image to match the rect size
         self.rect = self.image.get_rect(center=(window_config.WIDTH / 2, window_config.HEIGHT - 100))
         self.image = pygame.transform.scale(self.image, (self.rect.width, self.rect.height))
         self.hitbox = pygame.Rect(self.rect.left + 285, self.rect.top + 220, self.rect.width - 550, self.rect.height - 430)
@@ -73,11 +72,10 @@ class Player(pygame.sprite.Sprite):
         self.animation_speed = 200
         current_time = pygame.time.get_ticks()
 
-        # If enough time has passed, update the animation
         if current_time - self.last_update_time > self.animation_speed:
             self.animation_index += 1
             self.image = self.asset_loader.assets['player']['idle'][self.animation_index % 4]
-            self.last_update_time = current_time  # Update the last update time to the current time
+            self.last_update_time = current_time
 
     def death_animation(self):
         self.animation_speed = 200
@@ -92,11 +90,9 @@ class Player(pygame.sprite.Sprite):
                 self.is_executing_animation = None
                 self.last_executed_animation = 'Death'
             else:
-                # Get the next image in the animation
                 original_image = self.asset_loader.assets['player']['death'][
                     self.animation_index % len(self.asset_loader.assets['player']['death'])]
 
-                # Flip the image horizontally to make it go to the left
                 self.image = original_image if self.animation_on_side == 'Right' else pygame.transform.flip(
                     original_image, True, False)
 
@@ -116,11 +112,9 @@ class Player(pygame.sprite.Sprite):
                 self.is_executing_animation = None
                 self.last_executed_animation = 'Take hit'
             else:
-                # Get the next image in the animation
                 original_image = self.asset_loader.assets['player']['take_hit'][
                     self.animation_index % len(self.asset_loader.assets['player']['take_hit'])]
 
-                # Flip the image horizontally to make it go to the left
                 self.image = original_image if self.animation_on_side == 'Right' else pygame.transform.flip(
                     original_image, True, False)
 
@@ -142,32 +136,26 @@ class Player(pygame.sprite.Sprite):
                 FlameTrailling(self.all_sprites, asset_loader=self.asset_loader, position=self.rect.center,
                                hit_side=self.animation_on_side, attack_axis='horizontal')
         else:
-            # Gradually reduce the offset towards zero
-            self.offset *= 0.9  # Reduce by 10% each frame for smooth deceleration
+            self.offset *= 0.9
 
-            # Update the position based on the reduced offset
             self.rect.center = (original_position[0] + self.offset, original_position[1])
 
-            # Stop movement when close enough to center
             if abs(self.offset) < 1:
-                self.rect.center = original_position  # Snap to the exact center
-                self.offset = 0  # Ensure it stops moving
+                self.rect.center = original_position
+                self.offset = 0
 
         self.is_executing_animation = 'Attack 1'
         current_time = pygame.time.get_ticks()
 
-        # If enough time has passed, update the animation
         if current_time - self.last_update_time > self.animation_speed:
             if self.animation_index >= len(self.asset_loader.assets['player']['attack_1']):
                 self.animation_index = 0
                 self.is_executing_animation = None
                 self.last_executed_animation = 'Attack 1'
             else:
-                # Get the next image in the animation
                 original_image = self.asset_loader.assets['player']['attack_1'][
                     self.animation_index % len(self.asset_loader.assets['player']['attack_1'])]
 
-                # Flip the image horizontally to make it go to the left
                 self.image = original_image if self.animation_on_side == 'Right' else pygame.transform.flip(
                     original_image, True, False)
 
@@ -191,36 +179,29 @@ class Player(pygame.sprite.Sprite):
                                hit_side=self.animation_on_side, attack_axis='vertical')
 
         else:
-            # Gradually reduce the offset towards zero
-            self.offset *= 0.9  # Reduce by 10% each frame for smooth deceleration
+            self.offset *= 0.9
 
-            # Update the position based on the reduced offset
             self.rect.center = (original_position[0] + self.offset, original_position[1])
 
-            # Stop movement when close enough to center
             if abs(self.offset) < 1:
-                self.rect.center = original_position  # Snap to the exact center
-                self.offset = 0  # Ensure it stops moving
+                self.rect.center = original_position
+                self.offset = 0
 
         self.is_executing_animation = 'Attack 2'
         current_time = pygame.time.get_ticks()
 
-        # If enough time has passed, update the animation
         if current_time - self.last_update_time > self.animation_speed:
             if self.animation_index >= len(self.asset_loader.assets['player']['attack_2']):
                 self.animation_index = 0
                 self.is_executing_animation = None
                 self.last_executed_animation = 'Attack 2'
             else:
-                # Get the next image in the animation
                 original_image = self.asset_loader.assets['player']['attack_2'][
                     self.animation_index % len(self.asset_loader.assets['player']['attack_2'])]
 
-                # Flip the image horizontally to make it go to the left
                 self.image = original_image if self.animation_on_side == 'Right' else pygame.transform.flip(
                     original_image, True, False)
 
-                # Update the last update time and increment the animation index
                 self.last_update_time = current_time
                 self.animation_index += 1
 
@@ -360,27 +341,22 @@ class Player(pygame.sprite.Sprite):
                 self.death_animation()
 
     def player_hit_check(self):
-        # Use the player's custom hitbox for collisions instead of the full rect
         left_collisions = pygame.sprite.spritecollide(self, self.left_fruit_sprites, False)
         right_collisions = pygame.sprite.spritecollide(self, self.right_fruit_sprites, False)
 
-        # Check if any fruit collided with the player's hitbox
         colliding_fruit_with_player = None
 
-        # Check collisions on the left side
         for fruit in left_collisions:
-            if self.hitbox.colliderect(fruit.rect):  # Use hitbox for the collision check
+            if self.hitbox.colliderect(fruit.rect):
                 colliding_fruit_with_player = fruit
-                break  # Stop checking once a collision is found
+                break
 
-        # If no collision found on the left, check the right side
         if colliding_fruit_with_player is None:
             for fruit in right_collisions:
-                if self.hitbox.colliderect(fruit.rect):  # Use hitbox for the collision check
+                if self.hitbox.colliderect(fruit.rect):
                     colliding_fruit_with_player = fruit
-                    break  # Stop checking once a collision is found
+                    break
 
-        # Handle the collision if any fruit collided
         if colliding_fruit_with_player:
             self.animation_on_side = 'Right' if colliding_fruit_with_player.movement_direction == 1 else 'Left'
             self.take_hit_animation()

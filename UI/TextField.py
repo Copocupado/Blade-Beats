@@ -18,7 +18,6 @@ class TextField:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
-            # Toggle active state when clicked
             self.active = self.rect.collidepoint(event.pos)
             self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
             self.border_color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
@@ -41,7 +40,5 @@ class TextField:
         self.rect.w = width
 
     def draw(self, screen):
-        # Draw the border around the text field
         pg.draw.rect(screen, self.border_color, self.rect, BORDER_WIDTH)
-        # Draw the text inside the text field
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))

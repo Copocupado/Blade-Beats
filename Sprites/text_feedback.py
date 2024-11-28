@@ -8,15 +8,14 @@ class TextFeedback(pygame.sprite.Sprite):
         font = pygame.font.Font(None, 30)
 
         self.image = font.render(text, True, color)
-        self.image = self.image.convert_alpha()  # Enables per-pixel alpha
+        self.image = self.image.convert_alpha()
         self.rect = self.image.get_rect(midbottom=position)
-        self.alpha = 255  # Initial opacity
+        self.alpha = 255
 
     def update(self, *args, **kwargs):
-        self.rect.y -= 1  # Move up
-        self.alpha -= 5   # Reduce opacity
+        self.rect.y -= 1
+        self.alpha -= 5
         if self.alpha <= 0:
-            self.kill()   # Remove sprite when fully transparent
+            self.kill()
         else:
-            # Set new alpha level
             self.image.set_alpha(self.alpha)

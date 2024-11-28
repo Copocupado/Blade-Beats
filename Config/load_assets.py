@@ -5,7 +5,6 @@ import cv2
 
 class AssetLoader:
     def __init__(self):
-        # Initialize the dictionary to store different asset types
         self.assets = {
             "logo": None,
             "fruits": [],
@@ -43,7 +42,6 @@ class AssetLoader:
             }
         }
 
-        # Load assets
         self.load_logo()
         self.load_fruit_images()
         self.load_sliced_fruit_images()
@@ -78,17 +76,14 @@ class AssetLoader:
             self.assets['rankings'].append(image)
 
     def load_long_fruit_images(self):
-        # Path to the long fruit directory
         long_fruits_path = 'images/fruits/long_fruits'
 
         for fruit_name in os.listdir(long_fruits_path):
             fruit_dir = os.path.join(long_fruits_path, fruit_name)
 
-            # Check if the directory exists for the specific fruit
             if os.path.isdir(fruit_dir):
                 self.assets["long_fruits"][int(fruit_name)] = {"start": None, "middle": None, "end": None}
 
-                # Load the 'start' image
                 start_path = os.path.join(fruit_dir, "start.png")
                 if os.path.exists(start_path):
                     start_image = pygame.image.load(start_path).convert_alpha()
@@ -96,7 +91,6 @@ class AssetLoader:
                                                          (start_image.get_width() * 4, start_image.get_height() * 4))
                     self.assets["long_fruits"][int(fruit_name)]["start"] = start_image
 
-                # Load the 'middle' image
                 middle_path = os.path.join(fruit_dir, "middle.png")
                 if os.path.exists(middle_path):
                     middle_image = pygame.image.load(middle_path).convert_alpha()
@@ -104,7 +98,6 @@ class AssetLoader:
                                                           (middle_image.get_width() * 4, middle_image.get_height() * 4))
                     self.assets["long_fruits"][int(fruit_name)]["middle"] = middle_image
 
-                # Load the 'end' image
                 end_path = os.path.join(fruit_dir, "end.png")
                 if os.path.exists(end_path):
                     end_image = pygame.image.load(end_path).convert_alpha()
@@ -118,21 +111,18 @@ class AssetLoader:
             self.assets['long_slash'].append(image)
 
     def load_fruit_images(self):
-        # Load fruit images and scale them
         for i in range(1, 229):
             image = pygame.image.load(f'images/fruits/Fruit_{i}.png').convert_alpha()
             image = pygame.transform.scale(image, (image.get_width() * 5, image.get_height() * 5))
             self.assets["fruits"].append(image)
 
     def load_sliced_fruit_images(self):
-        # Load horizontally and vertically sliced fruit images
         sliced_fruits_path = 'images/slashed_fruits'
         for fruit_name in os.listdir(sliced_fruits_path):
             fruit_dir = os.path.join(sliced_fruits_path, fruit_name)
             if os.path.isdir(fruit_dir):
                 self.assets["sliced_fruits"][fruit_name] = {"horizontal": [], "vertical": []}
 
-                # Load horizontal slices
                 horizontal_dir = os.path.join(fruit_dir, "horizontal")
                 if os.path.isdir(horizontal_dir):
                     for image_name in os.listdir(horizontal_dir):
@@ -142,7 +132,6 @@ class AssetLoader:
                             image = pygame.transform.scale(image, (image.get_width() * 4, image.get_height() * 4))
                             self.assets["sliced_fruits"][fruit_name]["horizontal"].append(image)
 
-                # Load vertical slices
                 vertical_dir = os.path.join(fruit_dir, "vertical")
                 if os.path.isdir(vertical_dir):
                     for image_name in os.listdir(vertical_dir):
@@ -153,10 +142,8 @@ class AssetLoader:
                             self.assets["sliced_fruits"][fruit_name]["vertical"].append(image)
 
     def load_player_animations(self):
-        # Load player animations with scaling factor
         self.player_scale = 3
 
-        # Load player idle poses
         for i in range(1, 5):
             image_path = f'Animations/Player/Idle/{i}.png'
             image = pygame.image.load(image_path).convert_alpha()
@@ -164,7 +151,6 @@ class AssetLoader:
                 image.get_width() * self.player_scale, image.get_height() * self.player_scale))
             self.assets["player"]["idle"].append(scaled_image)
 
-        # Load player attack 17 poses
         for i in range(1, 5):
             image_path = f'Animations/Player/Attack 1/{i}.png'
             image = pygame.image.load(image_path).convert_alpha()
@@ -172,7 +158,6 @@ class AssetLoader:
                 image.get_width() * self.player_scale, image.get_height() * self.player_scale))
             self.assets["player"]["attack_1"].append(scaled_image)
 
-        # Load player attack 18 poses
         for i in range(1, 5):
             image_path = f'Animations/Player/Attack 2/{i}.png'
             image = pygame.image.load(image_path).convert_alpha()
@@ -195,16 +180,14 @@ class AssetLoader:
             self.assets["player"]["death"].append(scaled_image)
 
     def load_sounds(self):
-        # Load sword attack sounds
         for i in range(1, 5):
             hit_sound = pygame.mixer.Sound(f'audio/sword_attacks/sword_attack_{i}.mp3')
-            hit_sound.set_volume(0.5)  # Set volume to 50%
+            hit_sound.set_volume(0.5)
             self.assets["sounds"]["sword_attacks"].append(hit_sound)
 
-        # Load fruit slashed sounds
         for i in range(1, 4):
             hit_sound = pygame.mixer.Sound(f'audio/fruit_slashed/{i}.mp3')
-            hit_sound.set_volume(0.5)  # Set volume to 50%
+            hit_sound.set_volume(0.5)
             self.assets["sounds"]["fruit_slashed"].append(hit_sound)
 
         for i in range(1, 8):
@@ -234,7 +217,6 @@ class AssetLoader:
         self.assets["sounds"]["slam"] = sound
 
     def load_fruit_death_animations(self):
-        # Load Sparks 17 death animation
         sparks1_animation = []
         for i in range(1, 31):
             image_path = f'Animations/Fruits/Deaths/Sparks 1/{i}.png'
@@ -244,7 +226,6 @@ class AssetLoader:
             sparks1_animation.append(scaled_image)
         self.assets["fruit_deaths"]["sparks1"] = sparks1_animation
 
-        # Load Sparks 18 death animation
         sparks2_animation = []
         for i in range(1, 7):
             image_path = f'Animations/Fruits/Deaths/Sparks 2/{i}.png'
@@ -254,7 +235,6 @@ class AssetLoader:
             sparks2_animation.append(scaled_image)
         self.assets["fruit_deaths"]["sparks2"] = sparks2_animation
 
-        # Load Splatter death animation
         splatter_animation = []
         for i in range(1, 31):
             image_path = f'Animations/Fruits/Deaths/Splatter/{i}.png'

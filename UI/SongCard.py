@@ -26,7 +26,7 @@ class SongCard:
         self.creator = creator
 
         self.album_image = pg.image.load(album_image_path)
-        self.album_image = pg.transform.scale(self.album_image, (100, 100))  # Fixed size for album image
+        self.album_image = pg.transform.scale(self.album_image, (100, 100))
 
         self.play_button = Button(position=(self.width - 60, self.y + self.height - 35), size=(200, 50), color=GRAY, text="Jogar")
 
@@ -52,7 +52,7 @@ class SongCard:
 
         color = self.hover_color if self.hovered else self.background_color
         pg.draw.rect(screen, color, self.rect)
-        pg.draw.rect(screen, self.border_color, self.rect, 2)  # Border
+        pg.draw.rect(screen, self.border_color, self.rect, 2)
 
         image_padding = 10
         screen.blit(self.album_image,

@@ -108,40 +108,27 @@ class Fruit(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midleft=(self.perfect_overlay_right.rect.midleft))
 
     def set_long_image(self):
-        # Calculate the desired length based on health and speed
         self.length = self.health * self.speed * self.squish
 
-        # Load the start, middle, and end images
         start_image = self.asset_loader.assets['long_fruits'][self.sprite_index]['start']
         middle_image = self.asset_loader.assets['long_fruits'][self.sprite_index]['middle']
         end_image = self.asset_loader.assets['long_fruits'][self.sprite_index]['end']
 
-        # Calculate the width of the start, middle, and end images
         start_width = start_image.get_width()
         middle_width = middle_image.get_width()
         end_width = end_image.get_width()
 
-        # Calculate the height (assuming all images have the same height)
         image_height = start_image.get_height()
 
-        # Create the surface with the calculated length
         self.image = pygame.Surface((self.length * self.squish, image_height), pygame.SRCALPHA)
 
-        # Calculate how many middle images we need to fill the space
         number_of_middles = int((self.length - (start_width + end_width)) / middle_width)
 
-        # Start blitting the images into the blank surface
-        self.image.blit(start_image, (0, 0))  # Place the start image at the beginning
-        x_offset = start_width  # Update the offset after placing the start image
+        self.image.blit(start_image, (0, 0))
+        x_offset = start_width
 
-        # Add middle images until the width is greater than or equal to the desired length
         for i in range(0, number_of_middles):
-            self.image.blit(middle_image, (x_offset, 0))  # Place the middle image
-            x_offset += middle_width * self.squish  # Update the offset
+            self.image.blit(middle_image, (x_offset, 0))
+            x_offset += middle_width * self.squish
 
-        # After filling with middle images, place the end image at the end
-        self.image.blit(end_image, (x_offset, 0))  # Place the end image
-
-        # Add a border around the final image
-        border_thickness = 2  # Set the thickness of the border
-        border_color = (255, 0, 0)  # Red color for the border
+        self.image.blit(end_image, (x_offset, 0))
