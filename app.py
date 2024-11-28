@@ -3,20 +3,8 @@ import pygame
 pygame.init()
 pygame.mixer.init()
 
-
-import time
-from random import randint
-import cv2
-
 from Config.window_config import *
-from Config.colors import *
 from Config.camera import Camera
-
-from Sprites.player import Player
-from Sprites.fruit import Fruit
-
-from Sprites.perfect_overlay import PerfectOverlay
-from Sprites.good_overlay import GoodOverlay
 
 
 class Game:
@@ -68,6 +56,7 @@ class Game:
             scaled_rect = scaled_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
 
         screen.blit(scaled_surface, scaled_rect)
+
 
 if __name__ == '__main__':
     game = Game()
